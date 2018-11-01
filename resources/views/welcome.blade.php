@@ -5,10 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Quiz App</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+        <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
         <style>
@@ -22,7 +23,7 @@
             }
 
             .full-height {
-                height: 100vh;
+                height: 100px;
             }
 
             .flex-center {
@@ -41,14 +42,6 @@
                 top: 18px;
             }
 
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -59,11 +52,11 @@
                 text-transform: uppercase;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
+
         </style>
     </head>
+
+
     <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
@@ -77,20 +70,21 @@
                 </div>
             @endif
 
+            <h1> Quiz App in Laravel RESTful (back-end) API and REACT (front-end)</h1>
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Participants in this Quiz
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div id="root">
+
                 </div>
+
             </div>
+
+
         </div>
+
+    <script src="{{mix('js/app.js')}}}"></script>
     </body>
 </html>
