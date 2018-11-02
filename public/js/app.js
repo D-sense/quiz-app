@@ -36266,6 +36266,37 @@ var Main = function (_Component) {
             });
         }
     }, {
+        key: 'handleAnsweredQuestion',
+        value: function handleAnsweredQuestion(event) {
+            this.setState({ answer: event.target.value });
+        }
+    }, {
+        key: 'submitAnswers',
+        value: function submitAnswers(event) {
+            var _this3 = this;
+
+            fetch('api/products/', {
+                method: 'post',
+                /* headers are important*/
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(product)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                //update the state of products and currentProduct
+                _this3.setState(function (prevState) {
+                    return {
+                        products: prevState.products.concat(data),
+                        currentProduct: data
+                    };
+                });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var isAlreadyAuthenticated = this.isAuthenticated();
@@ -36282,8 +36313,13 @@ var Main = function (_Component) {
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'form',
-                        null,
-                        this.renderQuestions()
+                        { onSubmit: this.submitAnswers.bind(this) },
+                        this.renderQuestions(),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'button',
+                            { type: 'submit', className: 'btn btn-primary' },
+                            'Submit'
+                        )
                     )
                 )
             );
@@ -64337,18 +64373,11 @@ var Login = function (_Component) {
                 }
                 localStorage.setItem('access_token', res.body.access_token);
             });
-        }
-    }, {
-        key: 'isAuthenticated',
-        value: function isAuthenticated() {
-            var token = localStorage.getItem('access_token');
-            return token && token.length > 10;
+            this.setState({});
         }
     }, {
         key: 'render',
         value: function render() {
-            var isAlreadyAuthenticated = this.isAuthenticated();
-
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,

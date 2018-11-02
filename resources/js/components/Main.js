@@ -55,6 +55,32 @@ class Main extends Component {
         })
     }
 
+    handleAnsweredQuestion (event) {
+        this.setState({answer: event.target.value})
+    }
+
+    submitAnswers(event) {
+        fetch( 'api/products/', {
+            method:'post',
+            /* headers are important*/
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify(product)
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then( data => {
+                //update the state of products and currentProduct
+                this.setState((prevState)=> ({
+                    products: prevState.products.concat(data),
+                    currentProduct : data
+                }))
+            })
+    }
 
     render() {
         const isAlreadyAuthenticated = this.isAuthenticated();
@@ -67,8 +93,9 @@ class Main extends Component {
                     </BrowserRouter>
                     : (
                         <div>
-                            <form>
+                            <form onSubmit={this.submitAnswers.bind(this)}>
                                 {this.renderQuestions()}
+                                <button type="submit" className="btn btn-primary">Submit</button>
                             </form>
                         </div>
                     )}

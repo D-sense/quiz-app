@@ -61,18 +61,11 @@ class Login extends Component {
                 if(err) {this.state({errMessage: "Authentication Failed"});  return;}
                 localStorage.setItem('access_token', res.body.access_token);
             });
-    }
-
-
-    isAuthenticated() {
-        const token = localStorage.getItem('access_token');
-        return token && token.length > 10;
+        this.setState({});
     }
 
 
     render() {
-        const isAlreadyAuthenticated = this.isAuthenticated();
-
         return (
             <div>
                 <div className="container-fluid">
