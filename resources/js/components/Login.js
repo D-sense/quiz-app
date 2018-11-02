@@ -2,6 +2,7 @@ import React , {Component} from 'react';
 import ReactDOM from 'react-dom';
 import superagent from 'superagent';
 import {BrowserRouter} from 'react-router-dom';
+import Home from './Home';
 
 
 /* our Main components */
@@ -72,6 +73,9 @@ class Login extends Component {
                     <form onSubmit={this.submitForm.bind(this)}>
                         { this.renderWelcome() }
                         </form>
+
+                    <Home />
+
                 </div>
             </div>
         );

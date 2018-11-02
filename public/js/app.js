@@ -36197,12 +36197,38 @@ var Main = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
         _this.state = {
-            quizzes: []
+            quizzes: [],
+            chosenAnswers: []
         };
+
+        _this.submitAnswers = _this.submitAnswers.bind(_this);
+        _this.handleInput = _this.handleInput.bind(_this);
         return _this;
     }
 
     _createClass(Main, [{
+        key: 'handleInput',
+        value: function handleInput(key, e) {
+
+            /*Duplicating and updating the state */
+            var state = Object.assign({}, this.state.newProduct);
+            state[key] = e.target.value;
+            this.setState({ newProduct: state });
+        }
+
+        /* This method is invoked when submit button is pressed */
+
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
+            //preventDefault prevents page reload
+            e.preventDefault();
+            /*A call back to the onAdd props. The current
+             *state is passed as a param
+             */
+            this.props.onAdd(this.state.chosenAnswers);
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
@@ -36224,6 +36250,8 @@ var Main = function (_Component) {
     }, {
         key: 'renderQuestions',
         value: function renderQuestions() {
+            var _this3 = this;
+
             return this.state.quizzes.map(function (quiz) {
                 return (
                     //this.handleClick() method is invoked onClick.
@@ -36242,19 +36270,36 @@ var Main = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id,
+                                onChange: function onChange(e) {
+                                    return _this3.handleInput(quiz.id, e);
+                                }
+                            }),
+                            '  ',
                             quiz.answer_one,
                             ' ',
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id,
+                                onChange: function onChange(e) {
+                                    return _this3.handleInput(quiz.id, e);
+                                } }),
+                            '  ',
                             quiz.answer_two,
                             ' ',
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id,
+                                onChange: function onChange(e) {
+                                    return _this3.handleInput(quiz.id, e);
+                                } }),
+                            '  ',
                             quiz.answer_three,
                             ' ',
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'radio', name: quiz.id, value: quiz.id,
+                                onChange: function onChange(e) {
+                                    return _this3.handleInput(quiz.id, e);
+                                } }),
+                            '  ',
                             quiz.correct_answer,
                             ' ',
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null)
@@ -36272,9 +36317,11 @@ var Main = function (_Component) {
         }
     }, {
         key: 'submitAnswers',
-        value: function submitAnswers(event) {
-            var _this3 = this;
+        value: function submitAnswers(chosenAnswer) {
+            var _this4 = this;
 
+            //event.preventDefault();
+            /*Fetch API for post request */
             fetch('api/products/', {
                 method: 'post',
                 /* headers are important*/
@@ -36283,15 +36330,14 @@ var Main = function (_Component) {
                     'Content-Type': 'application/json'
                 },
 
-                body: JSON.stringify(product)
+                body: JSON.stringify(chosenAnswer)
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
                 //update the state of products and currentProduct
-                _this3.setState(function (prevState) {
+                _this4.setState(function (prevState) {
                     return {
-                        products: prevState.products.concat(data),
-                        currentProduct: data
+                        chosenAnswer: prevState.products.concat(data)
                     };
                 });
             });
@@ -64279,6 +64325,7 @@ module.exports = hoistNonReactStatics;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_superagent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_router_dom__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Home__ = __webpack_require__(109);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -64286,6 +64333,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -64388,7 +64436,8 @@ var Login = function (_Component) {
                         'form',
                         { onSubmit: this.submitForm.bind(this) },
                         this.renderWelcome()
-                    )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Home__["a" /* default */], null)
                 )
             );
         }
@@ -64398,6 +64447,130 @@ var Login = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (Login);
+
+/***/ }),
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+/* our Main components */
+
+var Home = function (_Component) {
+    _inherits(Home, _Component);
+
+    function Home() {
+        _classCallCheck(this, Home);
+
+        // Initializing the component's state
+        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this));
+
+        _this.state = {
+            grades: []
+        };
+        return _this;
+    }
+
+    _createClass(Home, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            /* fetch API in action */
+            fetch('/api/auth/grades').then(function (response) {
+                return response.json();
+            }).then(function (grades) {
+                //Fetched product is stored in the state
+                _this2.setState({ grades: grades });
+            });
+        }
+    }, {
+        key: 'renderParticipants',
+        value: function renderParticipants() {
+            var count = this.state.grades.length;
+
+            //checking is no user has taken the DB.
+            if (count == 0) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'p',
+                        null,
+                        'No Participant in the DataBase'
+                    )
+                );
+            }
+
+            return this.state.grades.map(function (participant) {
+                return (
+                    //this.handleClick() method is invoked onClick.
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { key: participant.id },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                null,
+                                'This user id: ',
+                                participant.user_id,
+                                ' '
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                null,
+                                'Grade: ',
+                                participant.grade
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null)
+                    )
+                );
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { lass: 'col' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'h3',
+                    null,
+                    'List of Participants'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    null,
+                    ' ',
+                    this.renderParticipants(),
+                    ' '
+                )
+            );
+        }
+    }]);
+
+    return Home;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Home);
 
 /***/ })
 /******/ ]);

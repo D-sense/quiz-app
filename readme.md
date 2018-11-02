@@ -12,6 +12,5 @@ run "composer install" to install all php packages, Afterwards, run "npm install
 4. Navigate to http://127.0.0.1:8000
 
 
-
 ## Author
 Adeshina H. h.

@@ -17,7 +17,7 @@ class QuizController extends Controller
      */
     public function __construct()
     {
-       // $this->middleware('auth:api', ['except' => ['home'] ]);
+        //$this->middleware('auth:api', ['except' => ['home'] ]);
     }
 
 
@@ -45,7 +45,6 @@ class QuizController extends Controller
     public function storeAnswer(Request $request)
     {
         // stores grade for each quiz taken by a user
-
     }
 
 
@@ -88,6 +87,20 @@ class QuizController extends Controller
         $quizzes = Quiz::all();
         return response()->json($quizzes);
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+//    public function displayParticipants()
+//    {
+//        // shows the questions
+//        $grade = Grade::all();
+//        return response()->json($grade);
+//    }
 
 
 

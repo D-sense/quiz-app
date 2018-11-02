@@ -30,7 +30,8 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 
-    Route::get('quiz', 'QuizController@displayQuiz');
-    Route::post('submit_quiz', 'QuizController@checkAnswer');
     Route::get('home', 'QuizController@home');
+    Route::get('quiz', 'QuizController@displayQuiz');
+    Route::get('grades', 'QuizController@home');
+    Route::post('submit_quiz', 'QuizController@checkAnswer');
 });

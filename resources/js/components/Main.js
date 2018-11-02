@@ -12,9 +12,32 @@ class Main extends Component {
 
         // Initializing the component's state
         this.state = {
-            quizzes: []
+            quizzes: [],
+            chosenAnswers: [],
         }
+
+        this.submitAnswers = this.submitAnswers.bind(this);
+        this.handleInput = this.handleInput.bind(this);
     }
+
+    handleInput(key, e) {
+
+        /*Duplicating and updating the state */
+        var state = Object.assign({}, this.state.newProduct);
+        state[key] = e.target.value;
+        this.setState({newProduct: state });
+    }
+
+    /* This method is invoked when submit button is pressed */
+    handleSubmit(e) {
+        //preventDefault prevents page reload
+        e.preventDefault();
+        /*A call back to the onAdd props. The current
+         *state is passed as a param
+         */
+        this.props.onAdd(this.state.chosenAnswers);
+    }
+
 
     componentDidMount() {
         /* fetch API in action */
@@ -42,10 +65,15 @@ class Main extends Component {
                         <p>{ quiz.question }</p>
                     </div>
                     <div>
-                        <input type="radio" name={quiz.id} value={quiz.id} />{ quiz.answer_one } <br />
-                        <input type="radio" name={quiz.id} value={quiz.id} />{ quiz.answer_two } <br />
-                        <input type="radio" name={quiz.id} value={quiz.id} />{ quiz.answer_three } <br />
-                        <input type="radio" name={quiz.id} value={quiz.id} />{ quiz.correct_answer } <br />
+                        <input type="radio" name={quiz.id} value={quiz.id}
+                               onChange={(e)=>this.handleInput(quiz.id, e)}
+                        />  { quiz.answer_one } <br />
+                        <input type="radio" name={quiz.id} value={quiz.id}
+                               onChange={(e)=>this.handleInput(quiz.id, e)} />  { quiz.answer_two } <br />
+                        <input type="radio" name={quiz.id} value={quiz.id}
+                               onChange={(e)=>this.handleInput(quiz.id, e)} />  { quiz.answer_three } <br />
+                        <input type="radio" name={quiz.id} value={quiz.id}
+                               onChange={(e)=>this.handleInput(quiz.id, e)}/>  { quiz.correct_answer } <br />
                     </div>
                     <br />
                     <hr />
@@ -59,7 +87,9 @@ class Main extends Component {
         this.setState({answer: event.target.value})
     }
 
-    submitAnswers(event) {
+    submitAnswers(chosenAnswer) {
+        //event.preventDefault();
+        /*Fetch API for post request */
         fetch( 'api/products/', {
             method:'post',
             /* headers are important*/
@@ -68,7 +98,7 @@ class Main extends Component {
                 'Content-Type': 'application/json'
             },
 
-            body: JSON.stringify(product)
+            body: JSON.stringify(chosenAnswer)
         })
             .then(response => {
                 return response.json();
@@ -76,11 +106,11 @@ class Main extends Component {
             .then( data => {
                 //update the state of products and currentProduct
                 this.setState((prevState)=> ({
-                    products: prevState.products.concat(data),
-                    currentProduct : data
+                    chosenAnswer: prevState.products.concat(data),
                 }))
             })
     }
+
 
     render() {
         const isAlreadyAuthenticated = this.isAuthenticated();
