@@ -17,7 +17,7 @@ class QuizController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['home'] ]);
+       // $this->middleware('auth:api', ['except' => ['home'] ]);
     }
 
 
@@ -58,18 +58,18 @@ class QuizController extends Controller
     public function checkAnswer(Request $request)
     {
         // stores grade for each quiz taken by a user
-        $grade = 0;
-
-        $answer[0] = request()->chosen_answer[0];
-        $answer[1] = request()->chosen_answer[1];
-        $answer[2] = request()->chosen_answer[2];
-        $answer[3] = request()->chosen_answer[3];
-
-        for($i = 0; $i <= $chosen_answer->length; $i++){
-            if($chosen_answer[i] == $answer[i]){
-                $grade++;
-            }
-        }
+//        $grade = 0;
+//
+//        $answer[0] = request()->chosen_answer[0];
+//        $answer[1] = request()->chosen_answer[1];
+//        $answer[2] = request()->chosen_answer[2];
+//        $answer[3] = request()->chosen_answer[3];
+//
+//        for($i = 0; $i <= $chosen_answer->length; $i++){
+//            if($chosen_answer[i] == $answer[i]){
+//                $grade++;
+//            }
+//        }
 
         return response()->json("Thank you for taking the test");
 

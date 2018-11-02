@@ -31,7 +31,7 @@ Route::group([
     Route::post('me', 'AuthController@me');
 
     Route::get('quiz', 'QuizController@displayQuiz');
+    Route::post('submit_quiz', 'QuizController@checkAnswer');
     Route::get('home', 'QuizController@home');
-
 
 });

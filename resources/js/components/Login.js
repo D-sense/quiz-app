@@ -1,41 +1,11 @@
-// import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
-//
-// export default class Example extends Component {
-//     render() {
-//         return (
-//             <div className="container">
-//                 <div className="row justify-content-center">
-//                     <div className="col-md-8">
-//                         <div className="card">
-//                             <div className="card-header">Example Component</div>
-//
-//                             <div className="card-body">
-//                                 I'm an example component!
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         );
-//     }
-// }
-//
-// if (document.getElementById('example')) {
-//     ReactDOM.render(<Example />, document.getElementById('example'));
-// }
-
-
-
 import React , {Component} from 'react';
 import ReactDOM from 'react-dom';
 import superagent from 'superagent';
 import {BrowserRouter} from 'react-router-dom';
-import Quiz from './Login';
 
 
 /* our Main components */
-class Main extends Component {
+class Login extends Component {
 
     constructor () {
         super();
@@ -45,18 +15,6 @@ class Main extends Component {
             email: "",
             password: "",
         }
-    }
-
-    componentDidMount() {
-        /* fetch API in action */
-        fetch('/api/auth/quiz')
-            .then(response => {
-                return response.json();
-            })
-            .then(quizzes => {
-                //Fetched product is stored in the state
-                this.setState({ quizzes });
-            });
     }
 
 
@@ -95,7 +53,7 @@ class Main extends Component {
     }
 
     submitForm(event) {
-        event.preventDefault();
+        //event.preventDefault();
         superagent
             .post('/api/auth/login')
             .send({email: this.state.email, password: this.state.password})
@@ -105,11 +63,11 @@ class Main extends Component {
             });
     }
 
+
     isAuthenticated() {
         const token = localStorage.getItem('access_token');
         return token && token.length > 10;
     }
-
 
 
     render() {
@@ -117,17 +75,11 @@ class Main extends Component {
 
         return (
             <div>
-                { isAlreadyAuthenticated ?
-                    <BrowserRouter>
-                        <Quiz />
-                    </BrowserRouter>
-                    : (
-                        <div className="container-fluid">
-                            <form onSubmit={this.submitForm.bind(this)}>
-                                { this.renderWelcome() }
-                            </form>
-                        </div>
-                    )}
+                <div className="container-fluid">
+                    <form onSubmit={this.submitForm.bind(this)}>
+                        { this.renderWelcome() }
+                        </form>
+                </div>
             </div>
         );
     }
@@ -135,12 +87,6 @@ class Main extends Component {
 }
 
 
-export default Main;
-
-/* The if statement is required so as to Render the component on pages that have a div with an ID of "root";
-*/
-if (document.getElementById('root')) {
-    ReactDOM.render(<Main />, document.getElementById('root'));
-}
+export default Login;
 
 
