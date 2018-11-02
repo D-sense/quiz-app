@@ -1,6 +1,5 @@
 import React , {Component} from 'react';
 import ReactDOM from 'react-dom';
-import superagent from 'superagent';
 import {BrowserRouter} from 'react-router-dom';
 import Login from './Login';
 
@@ -13,7 +12,12 @@ class Main extends Component {
         // Initializing the component's state
         this.state = {
             quizzes: [],
-            chosenAnswers: [],
+            chosenAnswers: {
+                answer_one: "",
+                answer_two: "",
+                answer_three: "",
+                correct_answer: "",
+            },
         }
 
         this.submitAnswers = this.submitAnswers.bind(this);

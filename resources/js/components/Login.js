@@ -1,7 +1,5 @@
 import React , {Component} from 'react';
-import ReactDOM from 'react-dom';
 import superagent from 'superagent';
-import {BrowserRouter} from 'react-router-dom';
 import Home from './Home';
 
 

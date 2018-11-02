@@ -37,41 +37,33 @@ class QuizController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeAnswer(Request $request)
-    {
-        // stores grade for each quiz taken by a user
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
+     * check answers, grade user, and store the record
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function checkAnswer(Request $request)
     {
-        // stores grade for each quiz taken by a user
-//        $grade = 0;
-//
-//        $answer[0] = request()->chosen_answer[0];
-//        $answer[1] = request()->chosen_answer[1];
-//        $answer[2] = request()->chosen_answer[2];
-//        $answer[3] = request()->chosen_answer[3];
-//
-//        for($i = 0; $i <= $chosen_answer->length; $i++){
-//            if($chosen_answer[i] == $answer[i]){
-//                $grade++;
-//            }
-//        }
+        $grade = 0;
+        $answers = [];
+
+        $answers[0] = request()->answer_one;
+        $answers[1] = request()->answer_two;
+        $answers[2] = request()->answer_three;
+        $answers[3] = request()->correct_answer;
+
+        for($i = 0; $i <= sizeof($answers); $i++){
+            if($answers[$i] == $answers[3]){
+                $grade++;
+            }
+        }
+
+        $gradeInstance = new Grade();
+        $gradeInstance->user_id = me();
+        $gradeInstance->grade = $grade;
+        $gradeInstance->save();
 
         return response()->json("Thank you for taking the test");
-
     }
 
 
@@ -89,18 +81,7 @@ class QuizController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-//    public function displayParticipants()
-//    {
-//        // shows the questions
-//        $grade = Grade::all();
-//        return response()->json($grade);
-//    }
+
 
 
 
